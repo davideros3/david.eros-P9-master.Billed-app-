@@ -36,7 +36,7 @@ export default class {
     $("#modaleFile").modal("show");
   };
 
-  // not need to cover this function by tests
+  
   getBills = () => {
     const userEmail = localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user")).email
@@ -55,8 +55,7 @@ export default class {
                   status: formatStatus(doc.data().status),
                 };
               } catch (e) {
-                // if for some reason, corrupted data was introduced, we manage here failing formatDate function
-                // log the error and return unformatted date in that case
+                
                 //   console.log(e,'for',doc.data())
                 return {
                   ...doc.data(),

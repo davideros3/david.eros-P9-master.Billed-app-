@@ -9,7 +9,7 @@ export const modal = () => (`
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Fee</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Receipt</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -19,17 +19,16 @@ export const modal = () => (`
       </div>
     </div>
   </div>
-  `)
+`)
 
 export default (bill) => {
-
   return (`
     <div class="container dashboard-form" data-testid="dashboard-form">
       <div class="row">
         <div class="col-sm" id="dashboard-form-col1">
-          <label for="expense-type" class="bold-label">Category of expense</label>
+          <label for="expense-type" class="bold-label">Expense type</label>
           <div class='input-field'> ${bill.type} </div>
-          <label for="expense-name" class="bold-label">Label of expense</label>
+          <label for="expense-name" class="bold-label">Expense name</label>
           <div class='input-field'> ${bill.name} </div>
           <label for="datepicker" class="bold-label">Date</label>
           <div class='input-field input-flex'>
@@ -44,7 +43,7 @@ export default (bill) => {
       </div>
       <div class="row">
         <div class="col-sm">
-          <label for="amount" class="bold-label">Amount all taxes incl. </label>
+          <label for="amount" class="bold-label">Amount (incl. tax)</label>
           <div class='input-field input-flex'>
             <span data-testid="amount-d">${bill.amount}</span>
             <span> ${euroIcon} </span>
@@ -66,8 +65,8 @@ export default (bill) => {
       </div>
       <div class="row">
         <div class="col-sm">
-          <label for="file" class="bold-label">Fee</label>
-            <div class='input-field input-flex file-flex'>
+          <label for="file" class="bold-label">Receipt</label>
+          <div class='input-field input-flex file-flex'>
             <span id="file-name-admin">${bill.fileName}</span>
             <div class='icons-container'>
               <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${bill.fileUrl}"> ${eyeWhite} </span>
@@ -76,27 +75,75 @@ export default (bill) => {
         </div>
       </div>
       <div class="row">
-       ${bill.status === 'pending' ? (`
-        <div class="col-sm">
-          <label for="commentary-admin" class="bold-label">Add a comment</label>
-          <textarea id="commentary2" class="form-control blue-border" data-testid="commentary2" rows="5"></textarea>
-        </div>
-       `) : (`
-        <div class="col-sm">
-          <label for="commentary-admin" class="bold-label">Your comment</label>
-          <div class='input-field'> ${bill.commentAdmin} </div>
-        </div>
-       `)}
+        ${bill.status === 'pending' ? (`
+          <div class="col-sm">
+            <label for="commentary-admin" class="bold-label">Add a comment</label>
+            <textarea id="commentary2" class="form-control blue-border" data-testid="commentary2" rows="5"></textarea>
+          </div>
+        `) : (`
+          <div class="col-sm">
+            <label for="commentary-admin" class="bold-label">Your comment</label>
+            <div class='input-field'> ${bill.commentAdmin} </div>
+          </div>
+        `)}
       </div>
       <div class="row">
-      ${bill.status === 'pending' ? (`
-      <div class="col-sm buttons-flex" style="width: 300px;" >
-        <button type="submit" id='btn-refuse-bill' data-testid='btn-refuse-bill-d' class="btn btn-primary">Decline</button>
-        <button type="submit" id='btn-accept-bill' data-testid='btn-accept-bill-d' class="btn btn-primary">Accept</button>
+        ${bill.status === 'pending' ? (`
+          <div class="col-sm buttons-flex" style="width: 300px;">
+            <button type="submit" id='btn-refuse-bill' data-testid='btn-refuse-bill-d' class="btn btn-primary">Refuse</button>
+            <button type="submit" id='btn-accept-bill' data-testid='btn-accept-bill-d' class="btn btn-primary">Accept</button>
+          </div>
+        `) : ''}
       </div>
-      `) : ''}
-    </div>
-    ${modal()}
+      ${modal()}
     </div>
   `)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

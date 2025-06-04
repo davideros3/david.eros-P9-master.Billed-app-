@@ -12,6 +12,7 @@ export const filteredBills = (data, status) => {
       let selectCondition
 
       // in jest environment
+       /* istanbul ignore else */
       if (typeof jest !== 'undefined') {
         selectCondition = (bill.status === status)
       } else {
@@ -28,10 +29,12 @@ export const filteredBills = (data, status) => {
 
 export const card = (bill) => {
   const firstAndLastNames = bill.email.split('@')[0]
-  const firstName = firstAndLastNames.includes('.') ?
-    firstAndLastNames.split('.')[0] : ''
-  const lastName = firstAndLastNames.includes('.') ?
-  firstAndLastNames.split('.')[1] : firstAndLastNames
+  const firstName = firstAndLastNames.includes('.')
+      ? firstAndLastNames.split('.')[0]
+      : ''
+  const lastName = firstAndLastNames.includes('.')
+      ? firstAndLastNames.split('.')[1]
+      : firstAndLastNames
 
   return (`
     <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${bill.id}'>
@@ -81,8 +84,11 @@ export default class {
   handleClickIconEye = () => {
     const billUrl = $('#icon-eye-d').attr("data-bill-url")
     const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.8)
-    $('#modaleFileAdmin1').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
-    if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
+    $('#modaleFileAdmin1')
+        .find(".modal-body")
+        .html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
+    if (typeof $('#modaleFileAdmin1').modal === 'function')
+      $('#modaleFileAdmin1').modal('show')
   }
 
   handleEditTicket(e, bill, bills) {
@@ -131,50 +137,31 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
-    if (!this.listState) {
-        this.listState = {};
-    }
-
-    // Toggle state for this index
-    this.listState[index] = !this.listState[index];
-
-    if (this.listState[index]) {
-        $(`#arrow-icon${index}`).css({ transform: 'rotate(0deg)' });
-        $(`#status-bills-container${index}`).html(cards(filteredBills(bills, getStatus(index))));
+    if (this.counter === undefined || this.index !== index) this.counter = 0
+    if (this.index === undefined || this.index !== index) this.index = index
+    if (this.counter % 2 === 0) {
+      $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
+      $(`#status-bills-container${this.index}`)
+        .html(cards(filteredBills(bills, getStatus(this.index))))
+      this.counter ++
     } else {
-        $(`#arrow-icon${index}`).css({ transform: 'rotate(90deg)' });
-        $(`#status-bills-container${index}`).html("");
+      $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
+      $(`#status-bills-container${this.index}`)
+        .html("")
+      this.counter ++
     }
 
-    // Ensure all ticket cards remain clickable
-    bills.forEach(bill => {
-        $(`#open-bill${bill.id}`).off("click").on("click", (e) => this.handleEditTicket(e, bill, bills));
-    });
+    filteredBills(bills, getStatus(this.index)).forEach(bill => {
+      $(`#open-bill${bill.id}`).click((e) =>
+          this.handleEditTicket(e, bill, bills))
+    })
 
-    return bills;
-}
-// handleShowTickets(e, bills, index) {
-//   if (this.counter === undefined || this.index !== index) this.counter = 0
-//   if (this.index === undefined || this.index !== index) this.index = index
-//   if (this.counter % 2 === 0) {
-//     $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
-//     $(`#status-bills-container${this.index}`)
-//       .html(cards(filteredBills(bills, getStatus(this.index))))
-//     this.counter ++
-//   } else {
-//     $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
-//     $(`#status-bills-container${this.index}`)
-//       .html("")
-//     this.counter ++
-//   }
+    return bills
 
-//   bills.forEach(bill => {
-//     $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
-//   })
+  }
 
-//   return bills
-
-  // no need to cover this function by tests
+  // not need to cover this function by tests
+  /* istanbul ignore next */
   getBillsAllUsers = () => {
     if (this.firestore) {
       return this.firestore
@@ -193,8 +180,9 @@ export default class {
       .catch(console.log)
     }
   }
-    
-  // no need to cover this function by tests
+
+  // not need to cover this function by tests
+  /* istanbul ignore next */
   updateBill = (bill) => {
     if (this.firestore) {
     return this.firestore
@@ -205,3 +193,12 @@ export default class {
     }
   }
 }
+
+
+
+
+
+
+
+
+

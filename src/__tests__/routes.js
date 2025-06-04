@@ -6,69 +6,79 @@ const loading = false
 const error = null
 
 describe('Given I am connected and I am on some page of the app', () => {
-  describe('When I navigate to Login page', () => {
-    test(('Then, it should render Login page'), () => {
+  describe('When I navigate to the Login page', () => {
+    test('Then it should render the Login page', () => {
       const pathname = ROUTES_PATH['Login']
       const html = ROUTES({ 
         pathname,
         data,
         loading,
         error
-       })
-       document.body.innerHTML = html
-       expect(screen.getAllByText('Administration')).toBeTruthy()
+      })
+      document.body.innerHTML = html
+      expect(screen.getAllByText('Administration')).toBeTruthy()
     })
   })
-  describe('When I navigate to Bills page', () => {
-    test(('Then, it should render Bills page'), () => {
+
+  describe('When I navigate to the Bills page', () => {
+    test('Then it should render the Bills page', () => {
       const pathname = ROUTES_PATH['Bills']
       const html = ROUTES({ 
         pathname,
         data,
         loading,
         error
-       })
-       document.body.innerHTML = html
-       expect(screen.getAllByText('My fees')).toBeTruthy()
+      })
+      document.body.innerHTML = html
+      expect(screen.getAllByText('My expense reports')).toBeTruthy()
     })
   })
-  describe('When I navigate to NewBill page', () => {
-    test(('Then, it should render NewBill page'), () => {
+
+  describe('When I navigate to the NewBill page', () => {
+    test('Then it should render the NewBill page', () => {
       const pathname = ROUTES_PATH['NewBill']
       const html = ROUTES({ 
         pathname,
         data,
         loading,
         error
-       })
-       document.body.innerHTML = html
-       expect(screen.getAllByText('Send a fee')).toBeTruthy()
+      })
+      document.body.innerHTML = html
+      expect(screen.getAllByText('Submit an expense report')).toBeTruthy()
     })
   })
-  describe('When I navigate to Dashboard', () => {
-    test(('Then, it should render Dashboard page'), () => {
+
+  describe('When I navigate to the Dashboard page', () => {
+    test('Then it should render the Dashboard page', () => {
       const pathname = ROUTES_PATH['Dashboard']
       const html = ROUTES({ 
         pathname,
         data,
         loading,
         error
-       })
-       document.body.innerHTML = html
-       expect(screen.getAllByText('Confirmation')).toBeTruthy()
+      })
+      document.body.innerHTML = html
+      expect(screen.getAllByText('Approvals')).toBeTruthy()
     })
   })
-  describe('When I navigate to anywhere else other than Login, Bills, NewBill, Dashboard', () => {
-    test(('Then, it should render Loginpage'), () => {
+
+  describe('When I navigate to a non-existent route', () => {
+    test('Then it should fallback to rendering the Login page', () => {
       const pathname = '/anywhere-else'
       const html = ROUTES({ 
         pathname,
         data,
         loading,
         error
-       })
-       document.body.innerHTML = html
-       expect(screen.getAllByText('Administration')).toBeTruthy()
+      })
+      document.body.innerHTML = html
+      expect(screen.getAllByText('Administration')).toBeTruthy()
     })
   })
 })
+
+
+
+
+
+

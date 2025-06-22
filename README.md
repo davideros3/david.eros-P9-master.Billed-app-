@@ -38,3 +38,8 @@
 `http://127.0.0.1:8080/coverage/lcov-report/`
 
 
+  if (!this.fileUrl || !this.fileName) {
+    window.alert("Please wait until the file is uploaded before submitting.")
+    return
+  }console.log("where is the bill", bill)
+    console.log("where is the image", this.fileUrl)

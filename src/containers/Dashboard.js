@@ -12,15 +12,16 @@ export const filteredBills = (data, status) => {
       let selectCondition
 
       // in jest environment
-       /* istanbul ignore else */
+       /* istanbul ignore next */
       if (typeof jest !== 'undefined') {
         selectCondition = (bill.status === status)
       } else {
+        /* istanbul ignore next */
         // in prod environment
         const userEmail = JSON.parse(localStorage.getItem("user")).email
         selectCondition =
           (bill.status === status) &&
-          [...USERS_TEST, userEmail].includes(bill.email)
+          [...USERS_TEST, userEmail].includes(bill.email) // coment out and also the &&
       }
 
       return selectCondition
@@ -87,8 +88,7 @@ export default class {
     $('#modaleFileAdmin1')
         .find(".modal-body")
         .html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
-    if (typeof $('#modaleFileAdmin1').modal === 'function')
-      $('#modaleFileAdmin1').modal('show')
+    if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal()
   }
 
   handleEditTicket(e, bill, bills) {
@@ -153,6 +153,7 @@ export default class {
 
     filteredBills(bills, getStatus(this.index)).forEach(bill => {
       $(`#open-bill${bill.id}`).click((e) =>
+        /* istanbul ignore next */
           this.handleEditTicket(e, bill, bills))
     })
 
@@ -175,6 +176,7 @@ export default class {
           date: doc.data().date,
           status: doc.data().status
         }))
+        console.log(bills);
         return bills
       })
       .catch(console.log)

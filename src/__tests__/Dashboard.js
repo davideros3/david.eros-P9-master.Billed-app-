@@ -188,18 +188,98 @@ describe('Given I am connected as Admin and on Dashboard page and I clicked a bi
       const dashboard = new Dashboard({
         document, onNavigate, firestore, bills, localStorage: window.localStorage
       })
-
+      
       const handleClickIconEye = jest.fn(dashboard.handleClickIconEye)
       const eye = screen.getByTestId('icon-eye-d')
-      $.fn.modal = jest.fn() // required for Bootstrap modal mocking
+      // $.fn.modal = jest.fn() // required for Bootstrap modal mocking
       eye.addEventListener('click', handleClickIconEye)
       userEvent.click(eye)
       expect(handleClickIconEye).toHaveBeenCalled()
 
       const modal = screen.getByTestId('modaleFileAdmin')
       expect(modal).toBeTruthy()
+
+      $.fn.modal = jest.fn()
+
+      const handleClickIconEye2 = jest.fn(dashboard.handleClickIconEye)
+      const eye2 = screen.getByTestId('icon-eye-d')
+      eye2.addEventListener('click', handleClickIconEye2)
+      userEvent.click(eye2)
+
+      expect(handleClickIconEye2).toHaveBeenCalled()
+      const modal2 = screen.getByTestId('modaleFileAdmin')
+      expect(modal2).toBeTruthy()
+
+      
+      expect($.fn.modal).toHaveBeenCalled()
+    })
+
+    // Else for modal whaeather is not a function 
+    test('handleClickIconEye does not throw if modal is not a function', () => {
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+      window.localStorage.setItem('user', JSON.stringify({ type: 'Admin' }))
+
+      const html = DashboardFormUI(bills[0])
+      document.body.innerHTML = html
+
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname })
+      }
+
+      const dashboard = new Dashboard({
+        document,
+        onNavigate,
+        firestore: null,
+        bills,
+        localStorage: window.localStorage
+      })
+
+      
+      $.fn.modal = undefined
+
+      const eye = screen.getByTestId('icon-eye-d')
+      eye.addEventListener('click', dashboard.handleClickIconEye)
+
+      expect(() => userEvent.click(eye)).not.toThrow()
+      ///chatgpt created 
     })
   })
+})
+
+
+
+
+test('handleShowTickets attaches click listener to each bill card', async () => {
+  const onNavigate = jest.fn()
+  const firestore = null
+
+  Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+  window.localStorage.setItem('user', JSON.stringify({  type: 'Admin' }))
+
+  const html = DashboardUI({ data: bills })
+  document.body.innerHTML = html
+
+ 
+  const dashboard = new Dashboard({
+    document, 
+    onNavigate, 
+    firestore, 
+    bills, 
+    localStorage: window.localStorage
+  })
+
+ 
+  const icon = screen.getByTestId('arrow-icon1')
+  userEvent.click(icon)
+  userEvent.click(icon) 
+  userEvent.click(icon) 
+
+  const billCard = await screen.findByTestId('open-bill47qAXb6fIm2zOKkLzMro')
+  expect(billCard).toBeTruthy()
+
+  const handleEditSpy = jest.spyOn(dashboard, 'handleEditTicket')
+  billCard.click()
+  expect(handleEditSpy).toHaveBeenCalled()
 })
 
 // Integration test - GET

@@ -48,7 +48,7 @@ export const bills = [{
   "status": "refused",
   "pct": 20,
   "amount": 200,
-  "email": "a@a",
+  "email": "a.b@a",
   "name": "test2",
   "vat": "40",
   "fileName": "preview-facture-free-201801-pdf-1.jpg",

@@ -40,7 +40,7 @@ describe("Given that I am logged in as an employee", () => {
       input.addEventListener("change", handleChangeFile);
       const falseAlert = jest.fn(newBill.alertExtension);
 
-      it("should be retained after upload if the format is correct", async () => {
+      test("should be retained after upload if the format is correct", async () => {
         const file = new File(["test file"], "testFile.jpg", {
           type: "image/jpg",
         });
@@ -51,7 +51,7 @@ describe("Given that I am logged in as an employee", () => {
         expect(falseAlert).not.toHaveBeenCalled();
       });
 
-      it("should not be retained after upload and trigger an alert if the format is incorrect", async () => {
+      test("should not be retained after upload and trigger an alert if the format is incorrect", async () => {
         const file = new File(["test file"], "testFile.txt", {
           type: "text/plain",
         });
@@ -67,7 +67,7 @@ describe("Given that I am logged in as an employee", () => {
     });
 
     describe("When I click on the Submit button with valid input", () => {
-      it("should default to 20 if the pct field is empty", () => {
+      test("should default to 20 if the pct field is empty", () => {
         const html = NewBillUI();
         document.body.innerHTML = html;
 
@@ -94,7 +94,7 @@ describe("Given that I am logged in as an employee", () => {
         screen.getByTestId("datepicker").value = "2020-12-01";
         screen.getByTestId("amount").value = "100";
         screen.getByTestId("vat").value = "10";
-        screen.getByTestId("pct").value = ""; // left empty
+        screen.getByTestId("pct").value = ""; 
         screen.getByTestId("commentary").value = "Test comment";
 
         const form = screen.getByTestId("form-new-bill");
@@ -103,10 +103,10 @@ describe("Given that I am logged in as an employee", () => {
         fireEvent.submit(form);
 
         expect(handleSubmit).toHaveBeenCalled();
-        // You cannot access the final bill object unless refactored, but the path is covered
+        
       });
 
-      it("my new Bill should be submitted and I should be navigated back to the Bills page", () => {
+      test("my new Bill should be submitted and I should be navigated back to the Bills page", () => {
         const html = NewBillUI();
         document.body.innerHTML = html;
         const inputData = {
@@ -169,31 +169,32 @@ describe("Given that I am logged in as an employee", () => {
         submitNewBill.addEventListener("submit", handleSubmit);
         fireEvent.submit(submitNewBill);
         expect(handleSubmit).toHaveBeenCalled();
-        expect(screen.getAllByText("Mes notes de frais")).toBeTruthy();
+        expect(screen.getAllByText("New expense report")).toBeTruthy();
       });
     });
   });
 });
 
 // POST integration test
+
 describe("Given that I am logged in as an Employee", () => {
   describe("When I create a new Bill", () => {
     test("Add bill to mock API POST", async () => {
       const getSpyPost = jest.spyOn(firebase, "post");
       const newBill = {
-        id: "eoKIpYhECmaZAGRrHjaC",
+        id: "hkdfshfJHJHjdkaJHD",
         status: "refused",
-        pct: 10,
-        amount: 500,
+        pct: 15,
+        amount: 400,
         email: "john@doe.com",
-        name: "Facture 236",
+        name: "number 5",
         vat: "60",
-        fileName: "preview-facture-free-201903-pdf-1.jpg",
+        fileName: "pdf-1.jpg",
         date: "2021-03-13",
-        commentAdmin: "à valider",
-        commentary: "A déduire",
-        type: "Restaurants et bars",
-        fileUrl: "https://saving.com",
+        commentAdmin: "Valid",
+        commentary: "Meeting",
+        type: "Restaurants",
+        fileUrl: "https://firebasestorage.googleapis.com/v0/b/billable-677b6.a…dur.png?alt=media&token=571d34cb-9c8f-430a-af52-66221cae1da3",
       };
       const bills = await firebase.post(newBill);
       expect(getSpyPost).toHaveBeenCalledTimes(1);
@@ -202,21 +203,21 @@ describe("Given that I am logged in as an Employee", () => {
 
     test("Add bill to API and fails with 404 message error", async () => {
       firebase.post.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 404"))
+        Promise.reject(new Error("Error 404"))
       );
-      const html = BillsUI({ error: "Erreur 404" });
+      const html = BillsUI({ error: "Error 404" });
       document.body.innerHTML = html;
-      const message = await screen.getByText(/Erreur 404/);
+      const message = await screen.getByText(/Error 404/);
       expect(message).toBeTruthy();
     });
 
     test("Add bill to API and fails with 500 message error", async () => {
       firebase.post.mockImplementationOnce(() =>
-        Promise.reject(new Error("Erreur 404")) // Typo? Should be 500?
+        Promise.reject(new Error("Error 500")) //
       );
-      const html = BillsUI({ error: "Erreur 500" });
+      const html = BillsUI({ error: "Error 500" });
       document.body.innerHTML = html;
-      const message = await screen.getByText(/Erreur 500/);
+      const message = await screen.getByText(/Error 500/);
       expect(message).toBeTruthy();
     });
   });

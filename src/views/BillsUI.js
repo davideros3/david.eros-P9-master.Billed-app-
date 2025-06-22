@@ -21,7 +21,8 @@ const row = (bill) => {
 const rows = (data) => {
   return (data && data.length)
     ? data
-        .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1))
+        // .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1))
+        .sort((a, b) => new Date(a.date) - new Date(b.date)) //Sort from earliest to latest
         .map(bill => row(bill))
         .join("")
     : ""

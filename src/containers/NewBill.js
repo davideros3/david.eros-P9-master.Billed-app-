@@ -44,7 +44,7 @@ export default class NewBill {
     if(this.firestore) {
       this.firestore
           .storage
-          .ref(`Receipt/${fileName}`)
+          .ref(`Receipts/${fileName}`)
           .put(file)
           .then(snapshot => snapshot.ref.getDownloadURL())
           .then(url => {
@@ -72,7 +72,10 @@ export default class NewBill {
       fileUrl: this.fileUrl,
       fileName: this.fileName,
       status: 'pending'
+    
     }
+     // console.log(fileUrl);
+    console.log(this.fileUrl);
     this.createBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
   }

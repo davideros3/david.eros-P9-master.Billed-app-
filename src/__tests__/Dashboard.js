@@ -241,7 +241,7 @@ describe('Given I am connected as Admin and on Dashboard page and I clicked a bi
       eye.addEventListener('click', dashboard.handleClickIconEye)
 
       expect(() => userEvent.click(eye)).not.toThrow()
-      ///chatgpt created 
+    
     })
   })
 })
